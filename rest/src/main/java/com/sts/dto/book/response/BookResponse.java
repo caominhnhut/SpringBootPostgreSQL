@@ -21,4 +21,6 @@ public class BookResponse {
     private Instant updatedAt;
 
     private List<BookTranslationDTO> translations;
+
+    private List<PraragraphResponse> paragraphs;
 }

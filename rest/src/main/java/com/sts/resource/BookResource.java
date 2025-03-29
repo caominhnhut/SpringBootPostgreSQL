@@ -1,16 +1,17 @@
 package com.sts.resource;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sts.dto.book.request.BookRequest;
+import com.sts.dto.book.request.ParagraphRequest;
 import com.sts.dto.book.response.BookResponse;
 import com.sts.mapper.BookResourceMapper;
 import com.sts.model.ResponseData;
@@ -48,10 +49,22 @@ public class BookResource{
         var books = bookService.getAllBooks();
         var bookResponses = books.stream()
                 .map(bookResourceMapper::toBookResponse)
-                .collect(Collectors.toList());
+                .toList();
 
         ResponseData<List<BookResponse>> responseData = new ResponseData<>();
         responseData.setData(bookResponses);
+
+        return ResponseEntity.ok(responseData);
+    }
+
+    @PostMapping("/{book-id}/paragraph")
+    public ResponseEntity<ResponseData<Long>> createParagraph(@PathVariable("book-id") Long bookId, @RequestBody @Valid ParagraphRequest paragraphRequest) {
+
+        var paragraph = bookResourceMapper.toParagraph(paragraphRequest);
+        Long paragraphId = bookService.createParagraph(bookId, paragraph);
+
+        ResponseData<Long> responseData = new ResponseData<>();
+        responseData.setData(paragraphId);
 
         return ResponseEntity.ok(responseData);
     }

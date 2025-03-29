@@ -1,7 +1,6 @@
 package com.sts.service.book;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -9,9 +8,17 @@ import org.springframework.validation.annotation.Validated;
 import com.sts.entity.BookEntity;
 import com.sts.entity.BookTranslationEntity;
 import com.sts.entity.BookTranslationId;
+import com.sts.entity.MediaResourceEntity;
+import com.sts.entity.ParagraphEntity;
+import com.sts.entity.ParagraphTranslationEntity;
+import com.sts.entity.ParagraphTranslationId;
 import com.sts.model.book.Book;
+import com.sts.model.book.Paragraph;
 import com.sts.repository.BookRepository;
 import com.sts.repository.BookTranslationRepository;
+import com.sts.repository.MediaResourceRepository;
+import com.sts.repository.ParagraphRepository;
+import com.sts.repository.ParagraphTranslationRepository;
 import com.sts.service.mapper.BookMapper;
 import com.sts.util.enums.BookStatus;
 
@@ -26,6 +33,12 @@ public class BookService {
     private final BookRepository bookRepository;
 
     private final BookTranslationRepository bookTranslationRepository;
+
+    private final ParagraphRepository paragraphRepository;
+
+    private final ParagraphTranslationRepository paragraphTranslationRepository;
+
+    private final MediaResourceRepository mediaResourceRepository;
 
     private final BookMapper bookMapper;
 
@@ -67,6 +80,47 @@ public class BookService {
 
         return bookEntities.stream()
                 .map(bookMapper::toBook)
-                .collect(Collectors.toList());
+                .toList();
+    }
+
+    public Long createParagraph(Long bookId, Paragraph paragraph) {
+        var book = bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Book not found"));
+
+        ParagraphEntity paragraphEntity = bookMapper.toParagraphEntity(paragraph);
+        paragraphEntity.setBook(book);
+        ParagraphEntity savedParagraph = paragraphRepository.save(paragraphEntity);
+
+        if (paragraph.getTranslations() != null && !paragraph.getTranslations().isEmpty()) {
+            var translationEntities = paragraph.getTranslations().stream()
+                    .map(tra -> {
+                        ParagraphTranslationEntity paraEntity = new ParagraphTranslationEntity();
+                        paraEntity.setId(new ParagraphTranslationId(savedParagraph.getId(), tra.getLocale()));
+                        paraEntity.setParagraphContent(tra.getParagraphContent());
+                        paraEntity.setParagraph(savedParagraph);
+
+                        return paraEntity;
+                    })
+                    .toList();
+
+            paragraphTranslationRepository.saveAll(translationEntities);
+        }
+
+        if (paragraph.getResources() != null && !paragraph.getResources().isEmpty()) {
+            var mediaResources = paragraph.getResources().stream()
+                    .map(rs -> {
+                        MediaResourceEntity mediaResource = new MediaResourceEntity();
+                        mediaResource.setLinkToResource(rs.getLinkToResource());
+                        mediaResource.setResourceType(rs.getResourceType());
+                        mediaResource.setDescription(rs.getDescription());
+                        mediaResource.setParagraph(savedParagraph);
+
+                        return mediaResource;
+                    })
+                    .toList();
+
+            mediaResourceRepository.saveAll(mediaResources);
+        }
+
+        return savedParagraph.getId();
     }
 }
