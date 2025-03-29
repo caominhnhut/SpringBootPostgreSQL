@@ -1,8 +1,7 @@
 package com.sts.resource;
 
-import com.sts.model.user.dto.UserDto;
-import com.sts.model.user.request.UserCreateRequest;
-import com.sts.model.user.request.UserUpdateRequest;
+import com.sts.model.user.User;
+import com.sts.model.user.UserUpdateRequest;
 import com.sts.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,24 +20,19 @@ public class UserResource {
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<UserDto>> getAllUsers() {
+    public ResponseEntity<List<User>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
         return userService.getUserById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody @Valid UserCreateRequest userRequest) {
-        return ResponseEntity.ok(userService.createUser(userRequest));
-    }
-
     @PutMapping("/{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody @Valid UserUpdateRequest userDetails) {
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody @Valid UserUpdateRequest userDetails) {
         return ResponseEntity.ok(userService.updateUser(id, userDetails));
     }
 

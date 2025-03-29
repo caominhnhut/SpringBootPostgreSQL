@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.sts</groupId>
-        <artifactId>spring-boot-postgre-sql</artifactId>
+        <artifactId>rainbow-be</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>spring-boot-postgre-sql-rest</artifactId>
+    <artifactId>rest</artifactId>
 
     <properties>
         <maven.compiler.source>${java.version}</maven.compiler.source>

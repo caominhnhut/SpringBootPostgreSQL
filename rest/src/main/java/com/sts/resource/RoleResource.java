@@ -1,8 +1,8 @@
 package com.sts.resource;
 
-import com.sts.model.role.dto.RoleDto;
-import com.sts.model.role.request.RoleCreateRequest;
-import com.sts.model.role.request.RoleUpdateRequest;
+import com.sts.model.role.Role;
+import com.sts.model.role.RoleCreateRequest;
+import com.sts.model.role.RoleUpdateRequest;
 import com.sts.service.role.RoleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,26 +29,26 @@ public class RoleResource {
      * so it checks for ROLE_ADMIN behind the scenes. If you want to use a custom prefix or no prefix at all,
      * you can use hasAuthority('ADMIN') instead.
      * */
-    public ResponseEntity<List<RoleDto>> getAllRoles() {
-        List<RoleDto> roles = roleService.getAllRoles();
+    public ResponseEntity<List<Role>> getAllRoles() {
+        List<Role> roles = roleService.getAllRoles();
         return ResponseEntity.ok(roles);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RoleDto> getRoleById(@PathVariable Long id) {
-        Optional<RoleDto> role = roleService.getRoleById(id);
+    public ResponseEntity<Role> getRoleById(@PathVariable Long id) {
+        Optional<Role> role = roleService.getRoleById(id);
         return role.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<RoleDto> createRole(@RequestBody @Valid RoleCreateRequest roleCreateRequest) {
-        RoleDto createdRole = roleService.createRole(roleCreateRequest);
+    public ResponseEntity<Role> createRole(@RequestBody @Valid RoleCreateRequest roleCreateRequest) {
+        Role createdRole = roleService.createRole(roleCreateRequest);
         return ResponseEntity.ok(createdRole);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RoleDto> updateRole(@PathVariable Long id, @RequestBody @Valid RoleUpdateRequest roleUpdateRequest) {
-        RoleDto updatedRole = roleService.updateRole(id, roleUpdateRequest);
+    public ResponseEntity<Role> updateRole(@PathVariable Long id, @RequestBody @Valid RoleUpdateRequest roleUpdateRequest) {
+        Role updatedRole = roleService.updateRole(id, roleUpdateRequest);
         return ResponseEntity.ok(updatedRole);
     }
 

@@ -6,6 +6,8 @@ import lombok.*;
 import java.io.Serial;
 import java.io.Serializable;
 
+import com.sts.util.enums.UserStatus;
+
 @Entity
 @Table(name = "users")
 @Getter
@@ -23,18 +25,21 @@ public class UserEntity extends AuditMetaData implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "phone_number", nullable = false, unique = true)
+    private String phoneNumber;
+
+    @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "full_name")
+    private String fullName;
 
     @Column(name = "password", nullable = false)
     @ToString.Exclude
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
+    @Column(name = "status")
     private UserStatus status;
 
 }

@@ -1,9 +1,9 @@
 package com.sts.service.userrole;
 
 import com.sts.entity.UserRoleEntity;
-import com.sts.model.userrole.dto.UserRoleDto;
-import com.sts.model.userrole.request.UserRoleCreateRequest;
-import com.sts.model.userrole.request.UserRoleUpdateRequest;
+import com.sts.model.userrole.UserRole;
+import com.sts.model.userrole.UserRoleCreateRequest;
+import com.sts.model.userrole.UserRoleUpdateRequest;
 import com.sts.repository.UserRoleRepository;
 import com.sts.service.mapper.UserRoleMapper;
 import lombok.RequiredArgsConstructor;
@@ -23,20 +23,20 @@ public class UserRoleServiceImpl implements UserRoleService {
     private final UserRoleMapper userRoleMapper;
 
     @Override
-    public List<UserRoleDto> getAllUserRoles() {
+    public List<UserRole> getAllUserRoles() {
         return userRoleRepository.findAll().stream()
                 .map(userRoleMapper::toDto)
                 .toList();
     }
 
     @Override
-    public Optional<UserRoleDto> getUserRoleById(Long id) {
+    public Optional<UserRole> getUserRoleById(Long id) {
         return userRoleRepository.findById(id)
                 .map(userRoleMapper::toDto);
     }
 
     @Override
-    public UserRoleDto createUserRole(UserRoleCreateRequest userRoleRequest) {
+    public UserRole createUserRole(UserRoleCreateRequest userRoleRequest) {
         var userRoleEntity = UserRoleEntity.builder()
                 .userId(userRoleRequest.getUserId())
                 .roleId(userRoleRequest.getRoleId())
@@ -46,7 +46,7 @@ public class UserRoleServiceImpl implements UserRoleService {
     }
 
     @Override
-    public UserRoleDto updateUserRole(Long id, UserRoleUpdateRequest userRoleDetails) {
+    public UserRole updateUserRole(Long id, UserRoleUpdateRequest userRoleDetails) {
         return userRoleRepository.findById(id)
                 .map(existingUserRole -> {
                     var updatedUserRole = UserRoleEntity.builder()

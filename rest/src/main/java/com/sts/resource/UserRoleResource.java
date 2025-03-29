@@ -1,8 +1,8 @@
 package com.sts.resource;
 
-import com.sts.model.userrole.dto.UserRoleDto;
-import com.sts.model.userrole.request.UserRoleCreateRequest;
-import com.sts.model.userrole.request.UserRoleUpdateRequest;
+import com.sts.model.userrole.UserRole;
+import com.sts.model.userrole.UserRoleCreateRequest;
+import com.sts.model.userrole.UserRoleUpdateRequest;
 import com.sts.service.userrole.UserRoleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,24 +21,24 @@ public class UserRoleResource {
     private final UserRoleService userRoleService;
 
     @GetMapping
-    public ResponseEntity<List<UserRoleDto>> getAllUserRoles() {
+    public ResponseEntity<List<UserRole>> getAllUserRoles() {
         return ResponseEntity.ok(userRoleService.getAllUserRoles());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserRoleDto> getUserRoleById(@PathVariable Long id) {
+    public ResponseEntity<UserRole> getUserRoleById(@PathVariable Long id) {
         return userRoleService.getUserRoleById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<UserRoleDto> createUserRole(@RequestBody @Valid UserRoleCreateRequest userRoleRequest) {
+    public ResponseEntity<UserRole> createUserRole(@RequestBody @Valid UserRoleCreateRequest userRoleRequest) {
         return ResponseEntity.ok(userRoleService.createUserRole(userRoleRequest));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserRoleDto> updateUserRole(@PathVariable Long id, @RequestBody @Valid UserRoleUpdateRequest userRoleDetails) {
+    public ResponseEntity<UserRole> updateUserRole(@PathVariable Long id, @RequestBody @Valid UserRoleUpdateRequest userRoleDetails) {
         return ResponseEntity.ok(userRoleService.updateUserRole(id, userRoleDetails));
     }
 

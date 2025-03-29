@@ -1,13 +1,13 @@
 version: '3.8'
 
 services:
-  spring-boot-postgre-sql:
+  database:
     image: postgres:16
-    container_name: spring-boot-postgre-sql
+    container_name: rainbow-database
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: spring-boot-postgre-sql
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: rainbow-db
       TZ: UTC
     ports:
       - "5432:5432"

@@ -1,11 +1,11 @@
 spring:
   application:
-    name: spring-boot-postgre-sql
+    name: rainbow-rest
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/spring-boot-postgre-sql
-    username: postgres
-    password: password
+    url: jdbc:postgresql://localhost:5432/rainbow-db
+    username: root
+    password: root
     driver-class-name: org.postgresql.Driver
 
   jpa:

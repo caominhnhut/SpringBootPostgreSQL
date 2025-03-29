@@ -1,9 +1,9 @@
 package com.sts.service.role;
 
 import com.sts.entity.RoleEntity;
-import com.sts.model.role.dto.RoleDto;
-import com.sts.model.role.request.RoleCreateRequest;
-import com.sts.model.role.request.RoleUpdateRequest;
+import com.sts.model.role.Role;
+import com.sts.model.role.RoleCreateRequest;
+import com.sts.model.role.RoleUpdateRequest;
 import com.sts.repository.RoleRepository;
 import com.sts.service.mapper.RoleMapper;
 import lombok.RequiredArgsConstructor;
@@ -23,20 +23,20 @@ public class RoleServiceImpl implements RoleService {
     private final RoleMapper roleMapper;
 
     @Override
-    public List<RoleDto> getAllRoles() {
+    public List<Role> getAllRoles() {
         return roleRepository.findAll().stream()
                 .map(roleMapper::toDto)
                 .toList();
     }
 
     @Override
-    public Optional<RoleDto> getRoleById(Long id) {
+    public Optional<Role> getRoleById(Long id) {
         return roleRepository.findById(id)
                 .map(roleMapper::toDto);
     }
 
     @Override
-    public RoleDto createRole(RoleCreateRequest roleRequest) {
+    public Role createRole(RoleCreateRequest roleRequest) {
         var roleEntity = RoleEntity.builder()
                 .roleName(roleRequest.getName())
                 .build();
@@ -45,7 +45,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public RoleDto updateRole(Long id, RoleUpdateRequest roleDetails) {
+    public Role updateRole(Long id, RoleUpdateRequest roleDetails) {
         return roleRepository.findById(id)
                 .map(existingRole -> {
                     var updatedRole = RoleEntity.builder()
