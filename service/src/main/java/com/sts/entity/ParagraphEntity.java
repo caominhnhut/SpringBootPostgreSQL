@@ -1,17 +1,25 @@
 package com.sts.entity;
 
-import jakarta.persistence.*;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @Entity
 @Table(name = "paragraphs")
-public class Paragraph {
+public class ParagraphEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,11 +32,11 @@ public class Paragraph {
 
     @ManyToOne
     @JoinColumn(name = "book_id", nullable = false)
-    private Book book;
+    private BookEntity book;
 
     @OneToMany(mappedBy = "paragraph", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ParagraphTranslation> translations;
+    private List<ParagraphTranslationEntity> translations;
 
     @OneToMany(mappedBy = "paragraph", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Resource> resources;
+    private List<MediaResourceEntity> resources;
 }

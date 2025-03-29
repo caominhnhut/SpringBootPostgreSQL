@@ -6,7 +6,7 @@ import com.sts.dto.register.request.SignupRequest;
 import com.sts.model.user.User;
 
 @Mapper(componentModel = "spring")
-public interface UserRequestMapper{
+public interface UserResourceMapper{
 
     User toUser(SignupRequest signupRequest);
 }

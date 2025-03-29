@@ -1,17 +1,23 @@
 package com.sts.entity;
 
-import jakarta.persistence.*;
+import java.io.Serializable;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @Entity
 @Table(name = "resources")
-public class Resource extends AuditMetaData implements Serializable{
+public class MediaResourceEntity extends AuditMetaData implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,5 +33,5 @@ public class Resource extends AuditMetaData implements Serializable{
 
     @ManyToOne
     @JoinColumn(name = "paragraph_id", nullable = false)
-    private Paragraph paragraph;
+    private ParagraphEntity paragraph;
 }
