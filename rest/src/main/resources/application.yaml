@@ -1,0 +1,15 @@
+spring:
+    profiles:
+        active: ${ACTIVE_PROFILE}
+
+jwt:
+    secret: ${JWT_SECRET}
+    validity: 3600 # the validity within an hour
+
+aws:
+    accessKey: ${AWS_ACCESS_KEY}
+    secretKey: ${AWS_SECRET_KEY}
+    region: ${AWS_REGION}
+#  bucketName: ${AWS_BUCKET_NAME}
+#  folderName: ${AWS_FOLDER_NAME}
+#  url: ${AWS_URL}
