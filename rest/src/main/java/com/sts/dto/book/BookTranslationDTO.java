@@ -1,9 +1,9 @@
-package com.sts.dto.book.request;
+package com.sts.dto.book;
 
 import lombok.Data;
 
 @Data
-public class BookTranslationRequest{
+public class BookTranslationDTO{
 
     private String locale;
 

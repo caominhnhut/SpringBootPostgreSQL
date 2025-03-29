@@ -1,5 +1,8 @@
 package com.sts.service.book;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -57,5 +60,13 @@ public class BookService {
         bookTranslationRepository.saveAll(translationEntities);
 
         return savedBookEntity.getId();
+    }
+
+    public List<Book> getAllBooks() {
+        List<BookEntity> bookEntities = bookRepository.findAll();
+
+        return bookEntities.stream()
+                .map(bookMapper::toBook)
+                .collect(Collectors.toList());
     }
 }
