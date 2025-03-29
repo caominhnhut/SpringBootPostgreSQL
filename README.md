@@ -50,8 +50,8 @@ spring.datasource.password=your_password
 ## API Endpoints
 
 ### Authentication Endpoints
-- POST `/api/auth/login` - Authenticate user
-- POST `/api/auth/signup` - Register new user
+- POST `/api/auth/authenticate` - Authenticate user
+- POST `/api/auth/register` - Register new user
 - POST `/api/auth/signout` - Logout user
 
 ### User Endpoints
