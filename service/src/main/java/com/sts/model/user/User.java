@@ -1,7 +1,13 @@
 package com.sts.model.user;
 
+import java.util.List;
+
 import com.sts.util.enums.UserStatus;
-import lombok.*;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,4 +27,5 @@ public class User{
 
     private UserStatus status;
 
+    private List<Long> roleIds;
 }

@@ -1,29 +1,37 @@
 package com.sts.service.user;
 
-import com.sts.entity.UserEntity;
-import com.sts.util.enums.UserStatus;
-import com.sts.exception.ValidationException;
-import com.sts.model.user.User;
-import com.sts.model.user.UserUpdateRequest;
-import com.sts.repository.UserRepository;
-import com.sts.service.mapper.UserMapper;
-import com.sts.util.ErrorCode;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import com.sts.entity.RoleEntity;
+import com.sts.entity.UserEntity;
+import com.sts.exception.ValidationException;
+import com.sts.model.user.User;
+import com.sts.model.user.UserUpdateRequest;
+import com.sts.repository.RoleRepository;
+import com.sts.repository.UserRepository;
+import com.sts.service.mapper.UserMapper;
+import com.sts.util.ErrorCode;
+import com.sts.util.enums.UserStatus;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class UserServiceImpl implements UserService {
 
+    private static final String DEFAULT_ROLE = "ROLE_GUEST";
+
     private final UserRepository userRepository;
+
+    private final RoleRepository roleRepository;
 
     private final UserMapper userMapper;
 
@@ -79,7 +87,22 @@ public class UserServiceImpl implements UserService {
 
         user.setStatus(UserStatus.ACTIVE);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         var userEntity = userMapper.toUserEntity(user);
+
+        if(user.getRoleIds() != null && !user.getRoleIds().isEmpty()){
+            Set<RoleEntity> roles = user.getRoleIds().stream()
+                    .map(roleId -> roleRepository.findById(roleId)
+                            .orElseThrow(() -> new RuntimeException("Role not found: " + roleId)))
+                    .collect(Collectors.toSet());
+
+            userEntity.setRoles(roles);
+        } else {
+            var defaultRole = roleRepository.findByName(DEFAULT_ROLE)
+                    .orElseThrow(() -> new RuntimeException("Default role not found"));
+            userEntity.setRoles(Set.of(defaultRole));
+        }
+
         return userRepository.save(userEntity).getId();
     }
 

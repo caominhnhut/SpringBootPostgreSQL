@@ -1,10 +1,11 @@
 package com.sts.dto.register.request;
 
+import java.util.List;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,4 +32,5 @@ public class SignupRequest {
 
     private String fullName;
 
+    private List<Long> roleIds;
 }

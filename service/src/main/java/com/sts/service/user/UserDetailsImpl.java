@@ -1,19 +1,21 @@
 package com.sts.service.user;
 
+import java.io.Serial;
+import java.util.Collection;
+import java.util.Set;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import com.sts.entity.RoleEntity;
 import com.sts.entity.UserEntity;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import java.io.Serial;
-import java.util.Collection;
-import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -42,7 +44,7 @@ public class UserDetailsImpl implements UserDetails {
 
         return UserDetailsImpl.builder()
                 .id(userEntity.getId())
-                .name(userEntity.getFullName())
+                .name(userEntity.getPhoneNumber())
                 .email(userEntity.getEmail())
                 .password(userEntity.getPassword())
                 .authorities(authorities)
@@ -51,7 +53,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getUsername() {
-        return getEmail();
+        return getName();
     }
 
     @Override
