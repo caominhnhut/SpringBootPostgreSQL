@@ -1,6 +1,7 @@
 package com.sts.service.book;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -81,6 +82,13 @@ public class BookService {
         return bookEntities.stream()
                 .map(bookMapper::toBook)
                 .toList();
+    }
+
+    public Book findById(Long bookId) {
+        Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
+
+        return bookEntity.map(bookMapper::toBook).orElse(null);
+
     }
 
     public Long createParagraph(Long bookId, Paragraph paragraph) {

@@ -57,6 +57,18 @@ public class BookResource{
         return ResponseEntity.ok(responseData);
     }
 
+    @GetMapping("/{book-id}")
+    public ResponseEntity<ResponseData<BookResponse>> findBookById(@PathVariable("book-id") Long bookId) {
+        var book = bookService.findById(bookId);
+
+        var bookResponses = bookResourceMapper.toBookResponse(book);
+
+        ResponseData<BookResponse> responseData = new ResponseData<>();
+        responseData.setData(bookResponses);
+
+        return ResponseEntity.ok(responseData);
+    }
+
     @PostMapping("/{book-id}/paragraph")
     public ResponseEntity<ResponseData<Long>> createParagraph(@PathVariable("book-id") Long bookId, @RequestBody @Valid ParagraphRequest paragraphRequest) {
 
